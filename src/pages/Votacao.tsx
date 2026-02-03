@@ -83,15 +83,17 @@ function App() {
 
       {/* LISTA */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: 25,
-          padding: 30,
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
-      >
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+    gap: 25,
+    padding: "30px 60px",
+    width: "100%",
+    boxSizing: "border-box",
+  }}
+>
+
+
         {candidatos.map((c) => (
           <div
             key={c.ID}
@@ -113,7 +115,8 @@ function App() {
               alt={c.NOME}
               style={{
                 width: "100%",
-                height: 250,
+                aspectRatio: "1 / 1",
+                height: "auto",
                 objectFit: "cover",
                 borderRadius: 10,
                 marginBottom: 15,
@@ -143,7 +146,9 @@ function App() {
               padding: 40,
               borderRadius: 15,
               textAlign: "center",
-              width: 400,
+              width: "90%",
+              maxWidth: 400,
+
             }}
           >
             <h2>Confirmar voto?</h2>
@@ -200,7 +205,9 @@ function App() {
               padding: 50,
               borderRadius: 20,
               textAlign: "center",
-              width: 450,
+              width: "90%",
+              maxWidth: 450,
+
             }}
           >
             <h1 style={{ color: "#009fe3" }}>
