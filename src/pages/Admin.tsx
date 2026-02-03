@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+
 
 type Candidato = {
   ID: number;
@@ -9,23 +19,40 @@ type Candidato = {
   FOTO: string | null;
 };
 
+type Apuracao = {
+  ID: number;
+  NOME: string;
+  TOTAL_VOTOS: number;
+};
+
+
 function Admin() {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [nome, setNome] = useState("");
   const [funcao, setFuncao] = useState("");
   const [numero, setNumero] = useState("");
   const [foto, setFoto] = useState<File | null>(null);
+  const [apuracao, setApuracao] = useState<Apuracao[]>([]);
+
 
   useEffect(() => {
-    carregarCandidatos();
-  }, []);
+  carregarCandidatos();
+  carregarApuracao();
+
+  const intervalo = setInterval(() => {
+    carregarApuracao();
+  }, 5000); // atualiza a cada 5 segundos
+
+  return () => clearInterval(intervalo);
+}, []);
+
 
   const carregarCandidatos = async () => {
     try {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:3001/candidatos/admin",
+        "https://urna-backend.onrender.com/candidatos/admin",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +79,7 @@ function Admin() {
         formData.append("foto", foto);
       }
 
-      await axios.post("http://localhost:3001/candidatos", formData, {
+      await axios.post("https://urna-backend.onrender.com/candidatos", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -71,6 +98,26 @@ function Admin() {
       alert("Erro ao cadastrar candidato");
     }
   };
+
+  const carregarApuracao = async () => {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+        "https://urna-backend.onrender.com/votos/apuracao",
+        {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
+        }
+        );
+
+        setApuracao(response.data);
+    } catch (error) {
+        console.error("Erro ao carregar apuração", error);
+    }
+    };
+
 
   return (
     <div style={{ padding: 40, maxWidth: 1100, margin: "0 auto" }}>
@@ -161,7 +208,7 @@ function Admin() {
                 <td style={{ padding: 10 }}>
                   {c.FOTO ? (
                     <img
-                      src={`http://localhost:3001/uploads/${c.FOTO}`}
+                      src={`https://urna-backend.onrender.com/uploads/${c.FOTO}`}
                       alt={c.NOME}
                       style={{
                         width: 60,
@@ -183,7 +230,30 @@ function Admin() {
           </tbody>
         </table>
       </div>
+      <div style={{ marginTop: 60 }}>
+  <h2 style={{ marginBottom: 20 }}>Apuração dos Votos</h2>
+
+  <div
+    style={{
+      background: "#fff",
+      padding: 20,
+      borderRadius: 10,
+    }}
+  >
+    <ResponsiveContainer width="100%" height={400}>
+      <BarChart data={apuracao}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="NOME" />
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="TOTAL_VOTOS" />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+</div>
+
     </div>
+    
   );
 }
 
