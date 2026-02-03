@@ -104,7 +104,7 @@ function Admin() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-        "http://localhost:3001/votos/apuracao",
+        "http://localhost:3001/votar/apuracao",
         {
             headers: {
             Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ function Admin() {
 
 
   return (
-    <div style={{ padding: 40, maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ padding: 40, margin: "0 auto", textAlign:"center" }}>
       <h1 style={{ marginBottom: 30 }}>Área Administrativa</h1>
 
       {/* FORMULÁRIO */}
@@ -170,7 +170,7 @@ function Admin() {
             onClick={cadastrar}
             style={{
               padding: "8px 20px",
-              background: "#1976d2",
+              background: "#009fe3",
               color: "#fff",
               border: "none",
               borderRadius: 5,
@@ -194,7 +194,7 @@ function Admin() {
           }}
         >
           <thead>
-            <tr style={{ background: "#1976d2", color: "#fff" }}>
+            <tr style={{ background: "#009fe3", color: "#fff" }}>
               <th style={{ padding: 10 }}>Foto</th>
               <th style={{ padding: 10 }}>Nome</th>
               <th style={{ padding: 10 }}>Função</th>
@@ -246,7 +246,7 @@ function Admin() {
         <XAxis dataKey="NOME" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="TOTAL_VOTOS" />
+        <Bar dataKey="TOTAL_VOTOS"  fill="#009fe3" />
       </BarChart>
     </ResponsiveContainer>
   </div>
