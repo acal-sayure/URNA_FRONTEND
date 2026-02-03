@@ -23,7 +23,7 @@ function App() {
   const carregarCandidatos = async () => {
     try {
       const response = await axios.get(
-        "https://urna-backend.onrender.com/candidatos/public"
+        "http://localhost:3001/candidatos/public"
       );
       setCandidatos(response.data);
     } catch (error) {
@@ -42,7 +42,7 @@ function App() {
     if (!selecionado) return;
 
     try {
-      await axios.post("https://urna-backend.onrender.com/votar", {
+      await axios.post("http://localhost:3001/votar", {
         id_candidato: selecionado.ID,
       });
 
@@ -107,7 +107,7 @@ function App() {
             <img
               src={
                 c.FOTO
-                  ? `https://urna-backend.onrender.com/uploads/${c.FOTO}`
+                  ? `http://localhost:3001/uploads/${c.FOTO}`
                   : "https://via.placeholder.com/250x250?text=Sem+Foto"
               }
               alt={c.NOME}

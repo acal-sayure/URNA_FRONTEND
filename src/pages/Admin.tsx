@@ -52,7 +52,7 @@ function Admin() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://urna-backend.onrender.com/candidatos/admin",
+        "http://localhost:3001/candidatos/admin",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ function Admin() {
         formData.append("foto", foto);
       }
 
-      await axios.post("https://urna-backend.onrender.com/candidatos", formData, {
+      await axios.post("http://localhost:3001/candidatos", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -104,7 +104,7 @@ function Admin() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-        "https://urna-backend.onrender.com/votos/apuracao",
+        "http://localhost:3001/votos/apuracao",
         {
             headers: {
             Authorization: `Bearer ${token}`,
@@ -208,7 +208,7 @@ function Admin() {
                 <td style={{ padding: 10 }}>
                   {c.FOTO ? (
                     <img
-                      src={`https://urna-backend.onrender.com/uploads/${c.FOTO}`}
+                      src={`http://localhost:3001/uploads/${c.FOTO}`}
                       alt={c.NOME}
                       style={{
                         width: 60,
