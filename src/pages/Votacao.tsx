@@ -2,11 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 type Candidato = {
-  ID: number;
-  NOME: string;
-  FUNCAO: string;
-  FOTO: string;
+  id: number;
+  nome: string;
+  funcao: string;
+  foto: string | null;
+  num_votacao: number;
 };
+
 
 function App() {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
@@ -23,7 +25,7 @@ function App() {
   const carregarCandidatos = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/candidatos/public"
+        "https://urna-backend.onrender.com/candidatos/public"
       );
       setCandidatos(response.data);
     } catch (error) {
@@ -42,8 +44,8 @@ function App() {
     if (!selecionado) return;
 
     try {
-      await axios.post("http://localhost:3001/votar", {
-        id_candidato: selecionado.ID,
+      await axios.post("https://urna-backend.onrender.com/votar", {
+        id_candidato: selecionado.id,
       });
 
       tocarSom();
@@ -96,7 +98,7 @@ function App() {
 
         {candidatos.map((c) => (
           <div
-            key={c.ID}
+            key={c.id}
             onClick={() => setSelecionado(c)}
             style={{
               background: "#fff",
@@ -108,11 +110,11 @@ function App() {
           >
             <img
               src={
-                c.FOTO
-                  ? `http://localhost:3001/uploads/${c.FOTO}`
+                c.foto
+                  ? `https://urna-backend.onrender.com/uploads/${c.foto}`
                   : "https://via.placeholder.com/250x250?text=Sem+Foto"
               }
-              alt={c.NOME}
+              alt={c.nome}
               style={{
                 width: "100%",
                 aspectRatio: "1 / 1",
@@ -122,8 +124,8 @@ function App() {
                 marginBottom: 15,
               }}
             />
-            <h2>{c.NOME}</h2>
-            <p>{c.FUNCAO}</p>
+            <h2>{c.nome}</h2>
+            <p>{c.funcao}</p>
           </div>
         ))}
       </div>
@@ -153,7 +155,7 @@ function App() {
           >
             <h2>Confirmar voto?</h2>
             <h3 style={{ color: "#009fe3" }}>
-              {selecionado.NOME}
+              {selecionado.nome}
             </h3>
 
             <div style={{ marginTop: 30 }}>

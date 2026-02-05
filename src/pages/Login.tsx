@@ -13,7 +13,7 @@ function Login() {
     setErro("");
 
     try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
+      const response = await axios.post("https://urna-backend.onrender.com/auth/login", {
         usuario,
         senha,
       });

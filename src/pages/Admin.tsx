@@ -12,11 +12,11 @@ import {
 
 
 type Candidato = {
-  ID: number;
-  NOME: string;
-  FUNCAO: string;
-  NUM_VOTACAO: number;
-  FOTO: string | null;
+  id: number;
+  nome: string;
+  funcao: string;
+  foto: string | null;
+  num_votacao: number;
 };
 
 type Apuracao = {
@@ -52,7 +52,7 @@ function Admin() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:3001/candidatos/admin",
+        "https://urna-backend.onrender.com/candidatos/admin",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,13 +73,13 @@ function Admin() {
       const formData = new FormData();
       formData.append("nome", nome);
       formData.append("funcao", funcao);
-      formData.append("numero_votacao", numero);
+      formData.append("num_votacao", numero);
 
       if (foto) {
         formData.append("foto", foto);
       }
 
-      await axios.post("http://localhost:3001/candidatos", formData, {
+      await axios.post("https://urna-backend.onrender.com/candidatos", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -104,7 +104,7 @@ function Admin() {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-        "http://localhost:3001/votar/apuracao",
+        "https://urna-backend.onrender.com/votar/apuracao",
         {
             headers: {
             Authorization: `Bearer ${token}`,
@@ -204,12 +204,12 @@ function Admin() {
 
           <tbody>
             {candidatos.map((c) => (
-              <tr key={c.ID} style={{ textAlign: "center" }}>
+              <tr key={c.id} style={{ textAlign: "center" }}>
                 <td style={{ padding: 10 }}>
-                  {c.FOTO ? (
+                  {c.foto ? (
                     <img
-                      src={`http://localhost:3001/uploads/${c.FOTO}`}
-                      alt={c.NOME}
+                      src={`https://urna-backend.onrender.com/uploads/${c.foto}`}
+                      alt={c.nome}
                       style={{
                         width: 60,
                         height: 60,
@@ -222,9 +222,9 @@ function Admin() {
                   )}
                 </td>
 
-                <td style={{ padding: 10 }}>{c.NOME}</td>
-                <td style={{ padding: 10 }}>{c.FUNCAO}</td>
-                <td style={{ padding: 10 }}>{c.NUM_VOTACAO}</td>
+                <td style={{ padding: 10 }}>{c.nome}</td>
+                <td style={{ padding: 10 }}>{c.funcao}</td>
+                <td style={{ padding: 10 }}>{c.num_votacao}</td>
               </tr>
             ))}
           </tbody>
