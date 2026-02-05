@@ -9,7 +9,6 @@ type Candidato = {
   num_votacao: number;
 };
 
-
 function App() {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [selecionado, setSelecionado] = useState<Candidato | null>(null);
@@ -55,7 +54,6 @@ function App() {
       setTimeout(() => {
         setVotoConfirmado(false);
       }, 2000);
-
     } catch (error) {
       console.error(error);
     }
@@ -78,35 +76,40 @@ function App() {
           alt="Acal"
           style={{ height: 60, marginBottom: 10 }}
         />
-        <h1 style={{ margin: 0, fontSize: 28 }}>
+        <h1 style={{ margin: 0, fontSize: 26 }}>
           Eleição SIPA 2026 - Acal
         </h1>
       </header>
 
       {/* LISTA */}
       <div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-    gap: 25,
-    padding: "30px 60px",
-    width: "100%",
-    boxSizing: "border-box",
-  }}
->
-
-
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: 20,
+          padding: "30px 40px",
+          width: "100%",
+          boxSizing: "border-box",
+        }}
+      >
         {candidatos.map((c) => (
           <div
             key={c.id}
             onClick={() => setSelecionado(c)}
             style={{
               background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
-              padding: 20,
+              borderRadius: 10,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+              padding: 15,
               cursor: "pointer",
+              transition: "transform 0.2s ease",
             }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.03)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "scale(1)")
+            }
           >
             <img
               src={
@@ -118,14 +121,14 @@ function App() {
               style={{
                 width: "100%",
                 aspectRatio: "1 / 1",
-                height: "auto",
                 objectFit: "cover",
-                borderRadius: 10,
-                marginBottom: 15,
+                borderRadius: 8,
+                marginBottom: 10,
               }}
             />
-            <h2>{c.nome}</h2>
-            <p>{c.funcao}</p>
+
+            <h3 style={{ margin: "5px 0" }}>{c.nome}</h3>
+            <p style={{ margin: 0, color: "#555" }}>{c.funcao}</p>
           </div>
         ))}
       </div>
@@ -140,34 +143,55 @@ function App() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: 20,
           }}
         >
           <div
             style={{
               background: "#fff",
-              padding: 40,
+              padding: 35,
               borderRadius: 15,
               textAlign: "center",
-              width: "90%",
+              width: "100%",
               maxWidth: 400,
-
             }}
           >
             <h2>Confirmar voto?</h2>
-            <h3 style={{ color: "#009fe3" }}>
+
+            <img
+              src={
+                selecionado.foto
+                  ? `https://urna-backend.onrender.com/uploads/${selecionado.foto}`
+                  : "https://via.placeholder.com/200x200?text=Sem+Foto"
+              }
+              alt={selecionado.nome}
+              style={{
+                width: 150,
+                height: 150,
+                objectFit: "cover",
+                borderRadius: 12,
+                margin: "15px auto",
+                display: "block",
+              }}
+            />
+
+            <h3 style={{ color: "#009fe3", marginTop: 10 }}>
               {selecionado.nome}
             </h3>
 
-            <div style={{ marginTop: 30 }}>
+            <p style={{ marginTop: 5 }}>{selecionado.funcao}</p>
+
+            <div style={{ marginTop: 25 }}>
               <button
                 onClick={votar}
                 style={{
                   backgroundColor: "#009fe3",
                   color: "#fff",
                   border: "none",
-                  padding: "12px 25px",
-                  marginRight: 15,
+                  padding: "10px 22px",
+                  marginRight: 10,
                   borderRadius: 8,
+                  cursor: "pointer",
                 }}
               >
                 Confirmar
@@ -178,8 +202,9 @@ function App() {
                 style={{
                   backgroundColor: "#ccc",
                   border: "none",
-                  padding: "12px 25px",
+                  padding: "10px 22px",
                   borderRadius: 8,
+                  cursor: "pointer",
                 }}
               >
                 Cancelar
@@ -199,17 +224,17 @@ function App() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: 20,
           }}
         >
           <div
             style={{
               background: "#fff",
-              padding: 50,
+              padding: 40,
               borderRadius: 20,
               textAlign: "center",
-              width: "90%",
-              maxWidth: 450,
-
+              width: "100%",
+              maxWidth: 400,
             }}
           >
             <h1 style={{ color: "#009fe3" }}>
@@ -219,7 +244,6 @@ function App() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
