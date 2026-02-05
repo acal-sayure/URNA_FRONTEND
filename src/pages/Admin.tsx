@@ -243,12 +243,13 @@ function Admin() {
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={apuracao}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="NOME" />
+        <XAxis dataKey="nome" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="TOTAL_VOTOS"  fill="#009fe3" />
+        <Bar dataKey="total_votos" fill="#009fe3" />
       </BarChart>
     </ResponsiveContainer>
+
   </div>
 </div>
 
