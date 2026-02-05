@@ -147,20 +147,20 @@ function App() {
           >
             
             <img
-  src={
-    c.foto
-      ? c.foto
-      : "https://via.placeholder.com/250x250?text=Sem+Foto"
-  }
-  alt={c.nome}
-  style={{
-    width: "100%",
-    aspectRatio: "1 / 1",
-    objectFit: "cover",
-    borderRadius: 8,
-    marginBottom: 10,
-  }}
-/>
+          src={
+            c.foto
+              ? c.foto
+              : "https://via.placeholder.com/250x250?text=Sem+Foto"
+          }
+          alt={c.nome}
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            objectFit: "cover",
+            borderRadius: 8,
+            marginBottom: 10,
+          }}
+        />
 
 
 

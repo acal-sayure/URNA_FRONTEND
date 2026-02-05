@@ -34,6 +34,8 @@ function Admin() {
   const [foto, setFoto] = useState<File | null>(null);
   const [apuracao, setApuracao] = useState<Apuracao[]>([]);
   const [urnaLiberada, setUrnaLiberada] = useState<boolean>(true);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
+
 
 
 
@@ -272,6 +274,13 @@ function Admin() {
                           ? c.foto
                           : "https://via.placeholder.com/250x250?text=Sem+Foto"
                       }
+                      style={{
+  width: 100,
+  height: 120,
+  objectFit: "cover",
+  borderRadius: 4
+}}
+
                     />
 
                   ) : (
@@ -287,28 +296,45 @@ function Admin() {
           </tbody>
         </table>
       </div>
-      <div style={{ marginTop: 60 }}>
-  <h2 style={{ marginBottom: 20 }}>Apuração dos Votos</h2>
+      <button
+      onClick={() => setMostrarResultados(!mostrarResultados)}
+      style={{
+        padding: "10px 20px",
+        background: "#009fe3",
+        color: "#fff",
+        border: "none",
+        borderRadius: 5,
+        marginTop: 40,
+        cursor: "pointer",
+      }}
+    >
+      {mostrarResultados ? "Ocultar Resultados" : "Exibir Resultados"}
+    </button>
 
-  <div
-    style={{
-      background: "#fff",
-      padding: 20,
-      borderRadius: 10,
-    }}
-  >
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={apuracao}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="nome" />
-        <YAxis />
-        <Tooltip />
-        <Bar dataKey="total_votos" fill="#009fe3" />
-      </BarChart>
-    </ResponsiveContainer>
+      {mostrarResultados && (
+        <div style={{ marginTop: 60 }}>
+          <h2 style={{ marginBottom: 20 }}>Apuração dos Votos</h2>
 
-  </div>
-</div>
+          <div
+            style={{
+              background: "#fff",
+              padding: 20,
+              borderRadius: 10,
+            }}
+          >
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={apuracao}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="nome" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="total_votos" fill="#009fe3" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
 
     </div>
     
