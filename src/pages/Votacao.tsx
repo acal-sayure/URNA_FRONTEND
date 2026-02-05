@@ -13,13 +13,24 @@ function App() {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [selecionado, setSelecionado] = useState<Candidato | null>(null);
   const [votoConfirmado, setVotoConfirmado] = useState(false);
+  const [urnaLiberada, setUrnaLiberada] = useState(true);
+
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     carregarCandidatos();
+    verificarStatus();
     audioRef.current = new Audio("/confirma-urna.mp3");
-  }, []);
+
+    // verifica status a cada 2 segundos
+    const intervalo = setInterval(() => {
+      verificarStatus();
+    }, 2000);
+
+    return () => clearInterval(intervalo);
+}, []);
+
 
   const carregarCandidatos = async () => {
     try {
@@ -40,24 +51,43 @@ function App() {
   };
 
   const votar = async () => {
-    if (!selecionado) return;
+  if (!selecionado) return;
 
-    try {
-      await axios.post("https://urna-backend.onrender.com/votar", {
-        id_candidato: selecionado.id,
-      });
+  if (!urnaLiberada) {
+    alert("Urna bloqueada. Aguarde o mesário.");
+    return;
+  }
 
-      tocarSom();
-      setSelecionado(null);
-      setVotoConfirmado(true);
+  try {
+    await axios.post("https://urna-backend.onrender.com/votar", {
+      id_candidato: selecionado.id,
+    });
 
-      setTimeout(() => {
-        setVotoConfirmado(false);
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    tocarSom();
+    setSelecionado(null);
+    setVotoConfirmado(true);
+
+    verificarStatus(); // 🔒 atualiza estado após votar
+
+    setTimeout(() => {
+      setVotoConfirmado(false);
+    }, 2000);
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+  const verificarStatus = async () => {
+  const response = await axios.get(
+    "https://urna-backend.onrender.com/votar/status"
+  );
+
+  setUrnaLiberada(response.data.liberada);
+};
+
+
 
   return (
     <div style={{ background: "#f4f4f4", minHeight: "100vh" }}>
@@ -95,7 +125,11 @@ function App() {
         {candidatos.map((c) => (
           <div
             key={c.id}
-            onClick={() => setSelecionado(c)}
+            onClick={() => {
+  if (!urnaLiberada) return;
+  setSelecionado(c);
+}}
+
             style={{
               background: "#fff",
               borderRadius: 10,
@@ -111,21 +145,24 @@ function App() {
               (e.currentTarget.style.transform = "scale(1)")
             }
           >
+            
             <img
-              src={
-                c.foto
-                  ? `https://urna-backend.onrender.com/uploads/${c.foto}`
-                  : "https://via.placeholder.com/250x250?text=Sem+Foto"
-              }
-              alt={c.nome}
-              style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
-                objectFit: "cover",
-                borderRadius: 8,
-                marginBottom: 10,
-              }}
-            />
+  src={
+    c.foto
+      ? c.foto
+      : "https://via.placeholder.com/250x250?text=Sem+Foto"
+  }
+  alt={c.nome}
+  style={{
+    width: "100%",
+    aspectRatio: "1 / 1",
+    objectFit: "cover",
+    borderRadius: 8,
+    marginBottom: 10,
+  }}
+/>
+
+
 
             <h3 style={{ margin: "5px 0" }}>{c.nome}</h3>
             <p style={{ margin: 0, color: "#555" }}>{c.funcao}</p>
@@ -159,21 +196,23 @@ function App() {
             <h2>Confirmar voto?</h2>
 
             <img
-              src={
-                selecionado.foto
-                  ? `https://urna-backend.onrender.com/uploads/${selecionado.foto}`
-                  : "https://via.placeholder.com/200x200?text=Sem+Foto"
-              }
-              alt={selecionado.nome}
-              style={{
-                width: 150,
-                height: 150,
-                objectFit: "cover",
-                borderRadius: 12,
-                margin: "15px auto",
-                display: "block",
-              }}
-            />
+  src={
+    selecionado.foto
+      ? selecionado.foto
+      : "https://via.placeholder.com/250x250?text=Sem+Foto"
+  }
+  alt={selecionado.nome}
+  style={{
+    width: 150,
+    height: 150,
+    objectFit: "cover",
+    borderRadius: 12,
+    margin: "15px auto",
+    display: "block",
+  }}
+/>
+
+
 
             <h3 style={{ color: "#009fe3", marginTop: 10 }}>
               {selecionado.nome}
@@ -244,6 +283,25 @@ function App() {
           </div>
         </div>
       )}
+
+      {!urnaLiberada && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      backgroundColor: "rgba(0,0,0,0.85)",
+      color: "#fff",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontSize: 28,
+      zIndex: 9999,
+    }}
+  >
+    🔒 Urna bloqueada
+  </div>
+)}
+
     </div>
   );
 }

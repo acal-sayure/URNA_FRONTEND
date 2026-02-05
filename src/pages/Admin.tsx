@@ -33,14 +33,18 @@ function Admin() {
   const [numero, setNumero] = useState("");
   const [foto, setFoto] = useState<File | null>(null);
   const [apuracao, setApuracao] = useState<Apuracao[]>([]);
+  const [urnaLiberada, setUrnaLiberada] = useState<boolean>(true);
+
 
 
   useEffect(() => {
-  carregarCandidatos();
-  carregarApuracao();
+    carregarCandidatos();
+    carregarApuracao();
+    verificarStatus();
 
   const intervalo = setInterval(() => {
     carregarApuracao();
+    verificarStatus();
   }, 5000); // atualiza a cada 5 segundos
 
   return () => clearInterval(intervalo);
@@ -118,6 +122,44 @@ function Admin() {
     }
     };
 
+    const verificarStatus = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get(
+      "https://urna-backend.onrender.com/votar/status",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setUrnaLiberada(response.data.liberada);
+  } catch (error) {
+    console.error("Erro ao verificar status", error);
+  }
+};
+
+
+  const liberarUrna = async () => {
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "https://urna-backend.onrender.com/votar/liberar",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    verificarStatus(); // 🔥 atualiza botão
+  };
+
+
+
 
   return (
     <div style={{ padding: 40, margin: "0 auto", textAlign:"center" }}>
@@ -181,6 +223,23 @@ function Admin() {
           </button>
         </div>
       </div>
+      <button
+        onClick={liberarUrna}
+        disabled={urnaLiberada}
+        style={{
+          padding: "10px 20px",
+          background: urnaLiberada ? "#999" : "green",
+          color: "#fff",
+          border: "none",
+          borderRadius: 5,
+          marginTop: 20,
+          cursor: urnaLiberada ? "not-allowed" : "pointer",
+        }}
+      >
+        {urnaLiberada ? "Aguardando voto..." : "Liberar Próximo Eleitor"}
+      </button>
+
+
 
       {/* LISTA */}
       <div>
@@ -208,15 +267,13 @@ function Admin() {
                 <td style={{ padding: 10 }}>
                   {c.foto ? (
                     <img
-                      src={`https://urna-backend.onrender.com/uploads/${c.foto}`}
-                      alt={c.nome}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        objectFit: "cover",
-                        borderRadius: 6,
-                      }}
+                      src={
+                        c.foto
+                          ? c.foto
+                          : "https://via.placeholder.com/250x250?text=Sem+Foto"
+                      }
                     />
+
                   ) : (
                     "Sem foto"
                   )}
