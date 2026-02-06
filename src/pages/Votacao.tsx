@@ -173,7 +173,7 @@ function App() {
 
 
 
-            <h3 style={{ margin: "3px 0" }}>{c.nome}</h3>
+            <h4 style={{ margin: "3px 0" }}>{c.nome}</h4>
             <p style={{ margin: 0, color: "#555" }}>{c.funcao}</p>
           </div>
         ))}
