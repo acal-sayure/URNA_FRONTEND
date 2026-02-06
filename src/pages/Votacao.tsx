@@ -94,22 +94,28 @@ function App() {
 
       {/* HEADER */}
       <header
-        style={{
-          backgroundColor: "#009fe3",
-          padding: "20px",
-          textAlign: "center",
-          color: "#fff",
-        }}
-      >
-        <img
-          src="https://lojaacal.vtexassets.com/assets/vtex/assets-builder/lojaacal.store-theme/1.0.48/LogoAcal___186aa3f3508cf05c699d5d064ed225da.png"
-          alt="Acal"
-          style={{ height: 60, marginBottom: 10 }}
-        />
-        <h1 style={{ margin: 0, fontSize: 26 }}>
-          Eleição SIPA 2026 - Acal
-        </h1>
-      </header>
+  style={{
+    backgroundColor: "#009fe3",
+    padding: "20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 20,
+    color: "#fff",
+    flexWrap: "wrap", // ajuda em telas menores
+  }}
+>
+  <img
+    src="https://lojaacal.vtexassets.com/assets/vtex/assets-builder/lojaacal.store-theme/1.0.48/LogoAcal___186aa3f3508cf05c699d5d064ed225da.png"
+    alt="Acal"
+    style={{ height: 60 }}
+  />
+
+  <h1 style={{ margin: 0, fontSize: 26 }}>
+    Eleição SIPA 2026 - Acal
+  </h1>
+</header>
+
 
       {/* LISTA */}
       <div
@@ -147,20 +153,23 @@ function App() {
           >
             
             <img
-          src={
-            c.foto
-              ? c.foto
-              : "https://via.placeholder.com/250x250?text=Sem+Foto"
-          }
-          alt={c.nome}
-          style={{
-            width: "100%",
-            aspectRatio: "1 / 1",
-            objectFit: "cover",
-            borderRadius: 8,
-            marginBottom: 10,
-          }}
-        />
+  src={
+    c.foto
+      ? c.foto
+      : "https://via.placeholder.com/250x250?text=Sem+Foto"
+  }
+  alt={c.nome}
+  style={{
+    width: "100%",
+    height: 220,              // altura fixa
+    objectFit: "contain",     // NÃO corta
+    backgroundColor: "#f2f2f2",
+    borderRadius: 8,
+    marginBottom: 10,
+    padding: 5,
+  }}
+/>
+
 
 
 
