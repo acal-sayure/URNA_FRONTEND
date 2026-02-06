@@ -96,11 +96,11 @@ function App() {
       <header
   style={{
     backgroundColor: "#009fe3",
-    padding: "20px",
+    padding: "15px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: 20,
+    gap: 18,
     color: "#fff",
     flexWrap: "wrap", // ajuda em telas menores
   }}
@@ -122,7 +122,7 @@ function App() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: 20,
+          gap: 18,
           padding: "30px 40px",
           width: "100%",
           boxSizing: "border-box",
@@ -132,9 +132,9 @@ function App() {
           <div
             key={c.id}
             onClick={() => {
-  if (!urnaLiberada) return;
-  setSelecionado(c);
-}}
+              if (!urnaLiberada) return;
+              setSelecionado(c);
+            }}
 
             style={{
               background: "#fff",
@@ -173,8 +173,8 @@ function App() {
 
 
 
-            <h4 style={{ margin: "3px 0" }}>{c.nome}</h4>
-            <p style={{ margin: 0, color: "#555" }}>{c.funcao}</p>
+            <h5 style={{ margin: "3px 0" }}>{c.nome}</h5>
+            <p style={{ margin: 0, color: "#555", fontSize: 13, }}>{c.funcao}</p>
           </div>
         ))}
       </div>
