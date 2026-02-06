@@ -323,14 +323,28 @@ function Admin() {
             }}
           >
             <ResponsiveContainer width="100%" height={400}>
-              <BarChart data={apuracao}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="nome" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="total_votos" fill="#009fe3" />
-              </BarChart>
-            </ResponsiveContainer>
+            <BarChart data={apuracao}>
+              <CartesianGrid strokeDasharray="3 3" />
+
+              <XAxis
+                dataKey="nome"
+                interval={0}
+                angle={-30}
+                textAnchor="end"
+                height={80}
+              />
+
+              <YAxis />
+
+              <Tooltip />
+
+              <Bar
+                dataKey="total_votos"
+                fill="#009fe3"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+
           </div>
         </div>
       )}

@@ -161,7 +161,7 @@ function App() {
   alt={c.nome}
   style={{
     width: "100%",
-    height: 220,              // altura fixa
+    height: 210,              // altura fixa
     objectFit: "contain",     // NÃO corta
     backgroundColor: "#f2f2f2",
     borderRadius: 8,
