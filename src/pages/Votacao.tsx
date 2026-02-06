@@ -153,27 +153,27 @@ function App() {
           >
             
             <img
-  src={
-    c.foto
-      ? c.foto
-      : "https://via.placeholder.com/250x250?text=Sem+Foto"
-  }
-  alt={c.nome}
-  style={{
-    width: "100%",
-    height: 200,              // altura fixa
-    objectFit: "contain",     // NÃO corta
-    backgroundColor: "#f2f2f2",
-    borderRadius: 8,
-    marginBottom: 8,
-    padding: 5,
-  }}
-/>
+          src={
+            c.foto
+              ? c.foto
+              : "https://via.placeholder.com/250x250?text=Sem+Foto"
+          }
+          alt={c.nome}
+          style={{
+            width: "100%",
+            height: 200,              // altura fixa
+            objectFit: "contain",     // NÃO corta
+            backgroundColor: "#f2f2f2",
+            borderRadius: 8,
+            marginBottom: 8,
+            padding: 5,
+          }}
+        />
 
 
 
 
-            <h3 style={{ margin: "5px 0" }}>{c.nome}</h3>
+            <h3 style={{ margin: "3px 0" }}>{c.nome}</h3>
             <p style={{ margin: 0, color: "#555" }}>{c.funcao}</p>
           </div>
         ))}
