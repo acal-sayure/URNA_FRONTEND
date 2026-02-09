@@ -33,15 +33,22 @@ function App() {
 
 
   const carregarCandidatos = async () => {
-    try {
-      const response = await axios.get(
-        "https://urna-backend.onrender.com/candidatos/public"
-      );
-      setCandidatos(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const response = await axios.get(
+      "https://urna-backend.onrender.com/candidatos/public"
+    );
+
+    const ordenados = response.data.sort((a: Candidato, b: Candidato) =>
+      a.nome.localeCompare(b.nome, "pt-BR", { sensitivity: "base" })
+    );
+
+    setCandidatos(ordenados);
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   const tocarSom = () => {
     if (audioRef.current) {
@@ -112,7 +119,7 @@ function App() {
   />
 
   <h1 style={{ margin: 0, fontSize: 26 }}>
-    Eleição SIPA 2026 - Acal
+    Eleições da CIPA 2026 - Acal
   </h1>
 </header>
 
