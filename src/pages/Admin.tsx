@@ -54,23 +54,29 @@ function Admin() {
 
 
   const carregarCandidatos = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        "https://urna-backend.onrender.com/candidatos/admin",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const response = await axios.get(
+      "https://urna-backend.onrender.com/candidatos/admin",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      setCandidatos(response.data);
-    } catch (error) {
-      console.error("Erro ao carregar candidatos", error);
-    }
-  };
+    const ordenados = [...response.data].sort((a, b) =>
+      a.nome.localeCompare(b.nome, "pt-BR", { sensitivity: "base" })
+    );
+
+    setCandidatos(ordenados);
+
+  } catch (error) {
+    console.error("Erro ao carregar candidatos", error);
+  }
+};
+
 
   const cadastrar = async () => {
     try {
@@ -106,23 +112,34 @@ function Admin() {
   };
 
   const carregarApuracao = async () => {
-    try {
-        const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-        const response = await axios.get(
-        "https://urna-backend.onrender.com/votar/apuracao",
-        {
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        }
-        );
+    const response = await axios.get(
+      "https://urna-backend.onrender.com/votar/apuracao",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-        setApuracao(response.data);
-    } catch (error) {
-        console.error("Erro ao carregar apuração", error);
-    }
-    };
+    const dados = Array.isArray(response.data) ? response.data : [];
+
+    const ordenado = dados.sort((a, b) =>
+      (a?.nome || "").localeCompare(b?.nome || "", "pt-BR", {
+        sensitivity: "base",
+      })
+    );
+
+    setApuracao(ordenado);
+
+  } catch (error) {
+    console.error("Erro ao carregar apuração", error);
+  }
+};
+
+
 
     const verificarStatus = async () => {
   try {
@@ -327,12 +344,14 @@ function Admin() {
               <CartesianGrid strokeDasharray="3 3" />
 
               <XAxis
-                dataKey="nome"
-                interval={0}
-                angle={-30}
-                textAnchor="end"
-                height={80}
-              />
+              dataKey="nome"
+              interval={0}
+              angle={-30}
+              textAnchor="end"
+              height={80}
+              tick={{ fontSize: 12 }}
+            />
+
 
               <YAxis />
 
