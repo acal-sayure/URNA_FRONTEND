@@ -126,12 +126,17 @@ function Admin() {
 
     const dados = Array.isArray(response.data) ? response.data : [];
 
-    // 🔥 CONVERTE PARA NÚMERO AQUI
-    const dadosTratados = dados.map((item: any) => ({
-      ID: item.ID,
-      nome: item.nome,
-      total_votos: Number(item.total_votos) || 0,
-    }));
+    const dadosTratados = dados
+      .map((item: any) => ({
+        ID: item.ID,
+        nome: item.nome,
+        total_votos: Number(item.total_votos) || 0, // 🔥 garante número
+      }))
+      .sort((a, b) =>
+        a.nome.localeCompare(b.nome, "pt-BR", {
+          sensitivity: "base",
+        })
+      );
 
     setApuracao(dadosTratados);
 
@@ -139,6 +144,7 @@ function Admin() {
     console.error("Erro ao carregar apuração", error);
   }
 };
+
 
 
 
